@@ -1,22 +1,76 @@
 <template>
   <div class="row mt-4">
-    <div class="col">
-      <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item mr-2" role="presentation">
-          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Mi perfil</button>
-        </li>
-        <li class="nav-item mr-2" role="presentation">
-          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Insignias</button>
-        </li>
-        <li class="nav-item mr-2" role="presentation">
-          <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Grupos</button>
-        </li>
-      </ul>
-      <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
-        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
-      </div>
-    </div>
+    <comfeco-tabs
+      :activedTab="tabId"
+      :tabsConfig="{
+        myProfile: {
+          id: 'myProfile',
+          label: 'Mi perfil',
+          isShowing: true
+        },
+        medals: {
+          id: 'medals',
+          label: 'Insignias',
+          isShowing: false
+        },
+        groups: {
+          id: 'groups',
+          label: 'Grupos',
+          isShowing: false
+        },
+        events: {
+          id: 'events',
+          label: 'Eventos',
+          isShowing: false
+        }
+      }"
+      @tabChanged="setTabParam"
+    >
+      <template slot="myProfile" slot-scope="tab">
+        <h1>Mi peril</h1>
+        <hr>
+        Esta es la informacion de mi perfil
+        {{tab}}
+      </template>
+
+      <template slot="medals" slot-scope="tab">
+        <h1>Insignias</h1>
+        <hr>
+        Esta es la informacion de mis insignias
+        {{tab}}
+      </template>
+
+      <template slot="groups" slot-scope="tab">
+        <h1>Grupos</h1>
+        <hr>
+        Esta es la informacion de mis grupos
+        {{tab}}
+      </template>
+
+      <template slot="events" slot-scope="tab">
+        <h1>Eventos</h1>
+        <hr>
+        Esta es la informacion de mis eventos
+        {{tab}}
+      </template>
+    </comfeco-tabs>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      tabId: ''
+    };
+  },
+  created() {
+    this.tabId = this.$route.query?.tabId || '';
+  },
+  methods: {
+    setTabParam(tabId) {
+      this.$router.push({query: { tabId}});
+    }
+  }
+}
+</script>
